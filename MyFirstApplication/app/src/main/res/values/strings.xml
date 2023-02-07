@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">MyFirstApplication</string>
+    <string name="label_nom">Nom</string>
+    <string name="label_prenom">Prénom</string>
+    <string name="label_date_naissance">Date de naissance</string>
+    <string name="label_ville_naissance">Ville de naissance</string>
+    <string name="label_phone_number">Numéro de téléphone</string>
+    <string name="label_valider">Valider</string>
+    <string name="label_delete">Supprimer</string>
+    <string name="reset_action">Reset</string>
+    <string name="pick_date">Pick Date</string>
+    <string name="label_ajouter_telephone">Ajouter Téléphone</string>
+</resources>
