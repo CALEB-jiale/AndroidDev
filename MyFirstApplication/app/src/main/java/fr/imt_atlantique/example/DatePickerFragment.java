@@ -2,12 +2,9 @@ package fr.imt_atlantique.example;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,10 +13,10 @@ import androidx.fragment.app.DialogFragment;
 import java.util.Calendar;
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
-    private EditText textInputDateNaissance;
-    public DatePickerFragment(EditText textInputDateNaissance) {
+    private EditText textInputBirthday;
+    public DatePickerFragment(EditText textInputBirthday) {
         super();
-        this.textInputDateNaissance = textInputDateNaissance;
+        this.textInputBirthday = textInputBirthday;
     }
 
     @NonNull
@@ -39,6 +36,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         month++;
         String date = "day/month/year: " + dayOfMonth + "/" + month + "/" + year;
-        textInputDateNaissance.setText(date);
+        textInputBirthday.setText(date);
     }
 }
