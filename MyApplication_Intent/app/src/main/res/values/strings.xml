@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MyApplication_Intent</string>
+    <string name="reminder_ask_question_tv">Enter your question</string>
+    <string name="reminder_ask_question_bt">Ask Question</string>
+    <string name="hint_question">Question</string>
+    <string name="hint_answer">Answer</string>
+    <string name="reminder_answer_bt">Answer the Question</string>
+    <string name="reminder_question_tv">Your question is: </string>
+</resources>

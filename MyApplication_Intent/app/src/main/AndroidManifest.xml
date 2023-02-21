@@ -9,7 +9,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Compteur"
+        android:theme="@style/Theme.MyApplication_Intent"
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"
@@ -20,7 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- service, receiver, provider -->
+
+        <activity android:name=".AnswerActivity"/>
+
     </application>
 
 </manifest>

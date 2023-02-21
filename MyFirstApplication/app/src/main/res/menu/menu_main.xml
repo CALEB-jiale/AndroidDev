@@ -5,4 +5,14 @@
         android:onClick="resetAction">
     </item>
 
+    <item android:id="@+id/find_city_info"
+        android:title="@string/label_find_city_info"
+        android:onClick="findCityInfo">
+    </item>
+
+    <item android:id="@+id/share_city_info"
+        android:title="@string/label_share_city_info"
+        android:onClick="shareCityInfo">
+    </item>
+
 </menu>

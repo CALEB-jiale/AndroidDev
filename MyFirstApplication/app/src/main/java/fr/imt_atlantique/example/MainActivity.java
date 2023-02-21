@@ -3,8 +3,11 @@ package fr.imt_atlantique.example;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -20,6 +23,8 @@ import android.widget.Spinner;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private String birthCity;
 
     private String departement;
-    private HashSet<String> phones;
+    private List<String> phones;
     private Spinner spinnerDepartement;
     private EditText textInputLastName;
     private EditText textInputFirstName;
@@ -105,6 +110,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // méthodes de manipulation des buttons
+
+    public void findCityInfo(MenuItem item) {
+        String url = "http://fr.wikipedia.org/?search=" + this.birthCity;
+
+        Uri uri = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
+    }
+
+    public void shareCityInfo(MenuItem item) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, this.birthCity);
+        intent.setType("text/plain");
+
+        String title = getResources().getString(R.string.chooser_title);;
+        Intent chooser = Intent.createChooser(intent, title);
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(chooser);
+        }
+    }
 
     public void resetAction(MenuItem item) {
         this.lastName = "";
@@ -185,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
         myEditor.putString("Birthday", this.birthday);
         myEditor.putString("BirthCity", this.birthCity);
         myEditor.putString("Departement", this.departement);
-        myEditor.putStringSet("Phones", this.phones);
+        myEditor.putStringSet("Phones", (Set<String>) this.phones);
 
         myEditor.apply();
     }
@@ -199,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
         this.birthday = myData.getString("Birthday", "");
         this.birthCity = myData.getString("BirthCity", "");
         this.departement = myData.getString("Departement", "");
-        this.phones = (HashSet<String>) myData.getStringSet("Phones", new HashSet<>());
+        this.phones = (List<String>) myData.getStringSet("Phones", new HashSet<>());
     }
 
     // méthodes du cycle de vie
