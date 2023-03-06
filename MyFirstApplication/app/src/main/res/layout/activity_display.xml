@@ -18,26 +18,143 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:paddingHorizontal="20dp"
-            android:background="@color/teal_200"
-            android:orientation="horizontal">
+            android:background="@color/teal_200" >
 
             <TextView
-                android:id="@+id/label_phone"
-                android:layout_width="120dp"
+                android:id="@+id/label_last_name"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:text="@string/label_phone_display"
+                android:text="@string/label_last_name_display"
                 android:textSize="25sp"/>
 
             <TextView
-                android:id="@+id/tv_display_phone"
-                android:layout_toEndOf="@+id/label_phone"
+                android:id="@+id/tv_display_last_name"
+                android:layout_toEndOf="@+id/label_last_name"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textSize="25sp"/>
 
         </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingHorizontal="20dp"
+            android:background="@color/teal_200" >
+
+            <TextView
+                android:id="@+id/label_name"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="@string/label_name_display"
+                android:textSize="25sp"/>
+
+            <TextView
+                android:id="@+id/tv_display_name"
+                android:layout_toEndOf="@+id/label_name"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="25sp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingHorizontal="20dp"
+            android:background="@color/teal_200" >
+
+            <TextView
+                android:id="@+id/label_birthday"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="@string/label_birthday_display"
+                android:textSize="25sp"/>
+
+            <TextView
+                android:id="@+id/tv_display_birthday"
+                android:layout_toEndOf="@+id/label_birthday"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="25sp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingHorizontal="20dp"
+            android:background="@color/teal_200" >
+
+            <TextView
+                android:id="@+id/label_birth_city"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="@string/label_birth_city_display"
+                android:textSize="25sp"/>
+
+            <TextView
+                android:id="@+id/tv_display_birth_city"
+                android:layout_toEndOf="@+id/label_birth_city"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="25sp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingHorizontal="20dp"
+            android:background="@color/teal_200" >
+
+            <TextView
+                android:id="@+id/label_department"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="@string/label_department_display"
+                android:textSize="25sp"/>
+
+            <TextView
+                android:id="@+id/tv_display_department"
+                android:layout_toEndOf="@+id/label_department"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="25sp"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_phones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <Button
+            android:onClick="editAction"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/label_edit" />
 
     </LinearLayout>
 

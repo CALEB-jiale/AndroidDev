@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public class User implements Parcelable {
@@ -13,15 +13,15 @@ public class User implements Parcelable {
     private String firstName;
     private String birthday;
     private String birthCity;
-    private String departement;
+    private String department;
     private List<String> phones;
 
-    public User(String firstName, String lastName, String birthday, String birthCity, String departement, List<String> phones) {
+    public User(String firstName, String lastName, String birthday, String birthCity, String department, List<String> phones) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
         this.birthCity = birthCity;
-        this.departement = departement;
+        this.department = department;
         this.phones = phones;
     }
 
@@ -30,7 +30,8 @@ public class User implements Parcelable {
         this.lastName = in.readString();
         this.birthday = in.readString();
         this.birthCity = in.readString();
-        this.departement = in.readString();
+        this.department = in.readString();
+        this.phones = new ArrayList<>();
         in.readStringList(this.phones);
     }
 
@@ -57,8 +58,32 @@ public class User implements Parcelable {
         dest.writeString(this.lastName);
         dest.writeString(this.birthday);
         dest.writeString(this.birthCity);
-        dest.writeString(this.departement);
+        dest.writeString(this.department);
         dest.writeStringList(this.phones);
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public void setBirthCity(String birthCity) {
+        this.birthCity = birthCity;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public void setPhones(List<String> phones) {
+        this.phones = phones;
     }
 
     public String getLastName() {
@@ -77,8 +102,8 @@ public class User implements Parcelable {
         return birthCity;
     }
 
-    public String getDepartement() {
-        return departement;
+    public String getDepartment() {
+        return department;
     }
 
     public List<String> getPhones() {

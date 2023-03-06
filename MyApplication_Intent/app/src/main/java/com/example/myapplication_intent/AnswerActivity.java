@@ -96,7 +96,7 @@ public class AnswerActivity extends AppCompatActivity {
 
     public void pushButtonAnswer(View v) {
         this.answer = this.inputAnswer.getText().toString();
-        Intent myIntent = new Intent(this, MainActivity.class);
+        Intent myIntent = new Intent();
         myIntent.putExtra("ANSWER", this.answer);
         this.setResult(RESULT_OK, myIntent);
         this.finish();
