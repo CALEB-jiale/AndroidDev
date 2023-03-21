@@ -7,98 +7,12 @@
     tools:context=".MainActivity">
 
     <LinearLayout
+        android:id="@+id/linear_layout_activity_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:paddingHorizontal="20dp"
         android:orientation="vertical"
-        android:padding="10dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/ti_nom"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/label_last_name"
-                android:textColorHint="#616161" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/ti_prenom"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/label_name"
-                android:textColorHint="#616161" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp" >
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ti_date_naissance"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="@string/label_birthday"
-                    android:textColorHint="#616161"/>
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-<!--        <Button-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:text="@string/pick_date"-->
-<!--            android:onClick="showDatePickerDialog" />-->
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/ti_ville_naissance"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/label_birth_city"
-                android:textColorHint="#616161" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Spinner
-            android:id="@+id/departements_spinner"
-            android:entries="@array/departments"
-            android:layout_height="50dp"
-            android:layout_width="match_parent">
-        </Spinner>
-
-        <LinearLayout
-            android:id="@+id/layout_phones"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-        </LinearLayout>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="addNewTelephone"
-            android:text="@string/label_add_telephone" />
-
-        <Button
-            android:onClick="validateAction"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="@string/label_validate" />
 
     </LinearLayout>
 

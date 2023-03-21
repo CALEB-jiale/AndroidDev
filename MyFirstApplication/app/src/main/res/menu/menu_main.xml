@@ -1,18 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/resetAction"
-        android:title="@string/reset_action"
-        android:onClick="resetAction">
+        android:title="@string/reset_action">
     </item>
 
     <item android:id="@+id/find_city_info"
-        android:title="@string/label_find_city_info"
-        android:onClick="findCityInfo">
+        android:title="@string/label_find_city_info">
     </item>
 
     <item android:id="@+id/share_city_info"
-        android:title="@string/label_share_city_info"
-        android:onClick="shareCityInfo">
+        android:title="@string/label_share_city_info">
     </item>
 
 </menu>

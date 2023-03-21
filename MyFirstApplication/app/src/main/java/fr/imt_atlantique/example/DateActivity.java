@@ -9,90 +9,79 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-public class DateActivity extends AppCompatActivity implements DatePickerFragment.OnDateSet{
-    private TextView textViewDate;
-    private String date;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_date);
-        Log.i("Lifecycle", "onCreate method");
-
-        init();
-    }
-
-    private void init() {
-        findViews();
-        addListeners();
-//        loadData();
-//        update();
-    }
-
-//    private void loadData() {
-//        Log.i("debug", "loadData");
-//        this.loadDataFromIntent(getIntent());
-//    }
+//public class DateActivity extends AppCompatActivity implements DatePickerFragment.OnDateSet, DateFragment.OnDateFragment {
+//    private String date;
+//    private DateFragment dateFragment;
 //
-//    private void loadDataFromIntent(Intent intent) {
-//        Log.i("debug", "loadDataFromIntent");
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_date);
+//        Log.i("Lifecycle", "onCreate method");
 //
-//        Bundle extras = intent.getExtras();
-//        if(extras == null) {
-//            Log.i("debug", "Intent = null");
+//        if (savedInstanceState != null) {
+//            if (!savedInstanceState.getBoolean("IS_CREATED")) {
+//                createDateFragment();
+//            }
 //        } else {
-//            Log.i("debug", "Intent is not null");
-//            this.date = extras.getString("DATE", "");
+//            createDateFragment();
 //        }
 //    }
-
-    private void addListeners() {
-        textViewDate.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_DOWN) {
-                    showDatePickerDialog(v);
-                }
-                return false;
-            }
-        });
-    }
-
-    public void showDatePickerDialog(View v) {
-        Log.i("debug", "showDatePickerDialog");
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getSupportFragmentManager(), "datePicker");
-    }
-
-    private void findViews() {
-        this.textViewDate = findViewById(R.id.textViewDate);
-    }
-
-//    private void update() {
-//        this.textViewDate.setText(this.date);
+//
+//    public void createDateFragment() {
+//        dateFragment = new DateFragment();
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction tx = fragmentManager.beginTransaction();
+//        tx.add(R.id.linear_layout_activity_date, dateFragment);
+//        tx.commit();
 //    }
-
-    public void dateValidateAction(View v) {
-        this.date = this.textViewDate.getText().toString();
-        Intent myIntent = new Intent();
-        myIntent.putExtra("DATE", this.date);
-        this.setResult(Activity.RESULT_OK, myIntent);
-        this.finish();
-    }
-
-    public void dateCancelAction(View v) {
-        Intent myIntent = new Intent();
-//        myIntent.putExtra("DATE", this.date);
-        this.setResult(Activity.RESULT_CANCELED, myIntent);
-        this.finish();
-    }
-
-    @Override
-    public void onDateChanged(int year, int month, int dayOfMonth) {
-        String myDate = "day/month/year: " + dayOfMonth + "/" + month + "/" + year;
-        this.textViewDate.setText(myDate);
-    }
-}
+//
+//    @Override
+//    public void setDateFragment(DateFragment fragment) {
+//        this.dateFragment = fragment;
+//    }
+//
+//    @Override
+//    public void setDate(String date) {
+//        this.date = date;
+//    }
+//
+//    @Override
+//    public void finishActivity(Boolean hasResult) {
+//        Intent myIntent = new Intent();
+//
+//        if (hasResult) {
+//            myIntent.putExtra("DATE", this.date);
+//            this.setResult(Activity.RESULT_OK, myIntent);
+//        } else {
+//            this.setResult(Activity.RESULT_CANCELED, myIntent);
+//        }
+//
+//        this.finish();
+//    }
+//
+//    @Override
+//    public void onDateChanged(int year, int month, int dayOfMonth) {
+//        this.date = "day/month/year: " + dayOfMonth + "/" + month + "/" + year;
+//        dateFragment.setDate(this.date);
+//    }
+//
+//    @Override
+//    public void onSaveInstanceState(@NonNull Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putBoolean("IS_CREATED", true);
+//    }
+//
+//    @Override
+//    public void showDatePickerDialog(View v) {
+//        Log.i("debug", "showDatePickerDialog");
+//        DialogFragment newFragment = new DatePickerFragment();
+//        newFragment.show(getSupportFragmentManager(), "datePicker");
+//    }
+//}
