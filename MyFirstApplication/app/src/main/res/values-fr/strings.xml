@@ -26,4 +26,7 @@
     <string name="label_cancel">Annuler</string>
     <string name="pickDateActivity">PickDateActivity</string>
     <string name="label_choose_date">Cliquez ici pour choisir la Date</string>
+    <string name="button_take_photo">Prendre une photo</string>
+    <string name="button_save_photo">Sauvegarder</string>
+    <string name="button_delete_photo">Suprimer</string>
 </resources>

@@ -2,6 +2,9 @@ package fr.imt_atlantique.example;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,6 +31,7 @@ public class DisplayFragment extends Fragment {
     private TextView textViewBirthday;
     private TextView textViewBirthCity;
     private TextView textViewDepartment;
+    private ImageView imageView;
     private Button buttonEdit;
     private LinearLayout layoutPhones;
     private User user;
@@ -36,6 +41,7 @@ public class DisplayFragment extends Fragment {
         void setDisplayFragment(DisplayFragment fragment);
         void closeDisplayFragment();
         void actionCall(View v);
+        Bitmap getThumbnail(String path);
     }
 
     public static DisplayFragment newInstance(User user) {
@@ -80,6 +86,7 @@ public class DisplayFragment extends Fragment {
         this.textViewBirthCity = rootView.findViewById(R.id.tv_display_birth_city);
         this.textViewDepartment = rootView.findViewById(R.id.tv_display_department);
         this.layoutPhones = rootView.findViewById(R.id.layout_phones_fragment_display);
+        this.imageView = rootView.findViewById(R.id.imageView_display);
     }
 
     private void update() {
@@ -89,6 +96,13 @@ public class DisplayFragment extends Fragment {
         this.textViewBirthCity.setText(this.user.getBirthCity());
         this.textViewDepartment.setText(this.user.getDepartment());
         updateLayoutPhone(this.user.getPhones());
+
+        if (this.user.getPhotoPath().length() > 0) {
+            Bitmap imageBitmap = myActivity.getThumbnail(user.getPhotoPath());
+            imageView.setImageBitmap(imageBitmap);
+        } else {
+            imageView.setImageResource(R.mipmap.ic_launcher);
+        }
     }
 
     private void updateLayoutPhone(List<String> phones) {

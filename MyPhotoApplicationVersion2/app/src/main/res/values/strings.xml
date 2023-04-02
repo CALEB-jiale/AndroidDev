@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">My Photo Application Version 2</string>
+    <string name="button_take_photo">Take a photo</string>
+    <string name="button_save_photo">Save</string>
+    <string name="button_delete_photo">Delete</string>
+    <string name="title_activity_photo">PhotoActivity</string>
+</resources>

@@ -1,17 +1,31 @@
 package fr.imt_atlantique.example;
 
+import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -19,12 +33,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +52,7 @@ public class EditFragment extends Fragment {
     private View rootView;
     private Button buttonValidate;
     private Button buttonAddPhone;
+    private Button buttonPhoto;
     private Spinner spinnerDepartment;
     private EditText textInputLastName;
     private EditText textInputFirstName;
@@ -42,12 +60,15 @@ public class EditFragment extends Fragment {
     private EditText textInputBirthCity;
     private LinearLayout layoutPhones;
     private Toolbar toolbar;
+    private ImageView imageView;
 
     public interface OnEditFragment {
         void setEditFragment(EditFragment fragment);
         void createDisplayFragment();
         void createDateFragment();
         void setUser(User user);
+        void takePhoto();
+        Bitmap getThumbnail(String path);
     }
 
     public static EditFragment newInstance(User user) {
@@ -81,14 +102,34 @@ public class EditFragment extends Fragment {
         addListeners();
 
         if (getArguments() != null) {
+            Log.i("DEBUG", "getArguments");
             user = getArguments().getParcelable(ARG_USER);
             update();
-        }
-
-        if (savedInstanceState != null) {
+        } else if (savedInstanceState != null) {
+            Log.i("DEBUG", "savedInstanceState");
             this.user = savedInstanceState.getParcelable("USER");
             update();
         }
+    }
+
+    private void update() {
+        textInputLastName.setText(this.user.getLastName());
+        textInputFirstName.setText(this.user.getFirstName());
+        textInputBirthday.setText(this.user.getBirthday());
+        textInputBirthCity.setText(this.user.getBirthCity());
+        setSpinnerDepartment();
+        updateLayoutPhone();
+
+        if ((this.user.getPhotoPath().length() > 0)) {
+            Bitmap imageBitmap = myActivity.getThumbnail(user.getPhotoPath());
+            setBitmap(imageBitmap);
+        } else {
+            imageView.setImageResource(R.mipmap.ic_launcher);
+        }
+    }
+
+    public void setBitmap(Bitmap imageBitmap) {
+        imageView.setImageBitmap(imageBitmap);
     }
 
     private void findViews() {
@@ -100,7 +141,9 @@ public class EditFragment extends Fragment {
         this.layoutPhones = rootView.findViewById(R.id.layout_phones);
         this.buttonAddPhone = rootView.findViewById(R.id.button_add_phone);
         this.buttonValidate = rootView.findViewById(R.id.button_validate_edit_fragment);
+        this.buttonPhoto = rootView.findViewById(R.id.button_photo_edit_fragment);
         this.toolbar = (Toolbar) rootView.findViewById(R.id.myToolbar);
+        this.imageView = rootView.findViewById(R.id.imageView_edit);
     }
 
     private void addListeners() {
@@ -119,6 +162,16 @@ public class EditFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN) {
                     addNewTelephone(v);
+                }
+                return false;
+            }
+        });
+
+        buttonPhoto.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                    actionTakePhoto(v);
                 }
                 return false;
             }
@@ -151,42 +204,12 @@ public class EditFragment extends Fragment {
         });
     }
 
-    public void findCityInfo(MenuItem item) {
-        String url = "http://fr.wikipedia.org/?search=" + this.user.getBirthCity();
-
-        Uri uri = Uri.parse(url);
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(intent);
-    }
-
-    public void shareCityInfo(MenuItem item) {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_TEXT, this.user.getBirthCity());
-        intent.setType("text/plain");
-
-        String title = getResources().getString(R.string.chooser_title_share_photo);;
-        Intent chooser = Intent.createChooser(intent, title);
-
-        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
-            startActivity(chooser);
-        }
-    }
-
-    public void resetAction(MenuItem item) {
-        List<String> phones = new ArrayList<>();
-        this.user = new User("", "", "", "", "", phones);
-        update();
-    }
-
     private void createDateFragment(View v) {
         myActivity.createDateFragment();
     }
 
-    //méthode de gestion téléphone
-    public View addNewTelephone(View v) {
-        View addPhone = getLayoutInflater().inflate(R.layout.input_phone, null);
-        layoutPhones.addView(addPhone);
-        return addPhone;
+    public void actionTakePhoto(View v) {
+        this.myActivity.takePhoto();
     }
 
     public void actionValidate(View v) {
@@ -196,45 +219,48 @@ public class EditFragment extends Fragment {
         myActivity.createDisplayFragment();
     }
 
-    private void showMessage(View v) {
-        Snackbar snackbar = Snackbar.make(v, this.user.getLastName() + " " + this.user.getFirstName() + " " + this.user.getBirthday() + " " + this.user.getBirthCity(), Snackbar.LENGTH_LONG);
-        snackbar.setAction("Dismiss", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                snackbar.dismiss();
-            }
-        });
-        snackbar.show();
+    public void updateUserPhoto(String path) {
+        user.setPhotoPath(path);
     }
 
     private void updateUser() {
-        String firstName = this.textInputFirstName.getText().toString();
-        String lastName = this.textInputLastName.getText().toString();
-        String birthday = this.textInputBirthday.getText().toString();
-        String birthCity = this.textInputBirthCity.getText().toString();
-        String department = this.spinnerDepartment.getSelectedItem().toString();
+        this.user.setFirstName(this.textInputFirstName.getText().toString());
+        this.user.setLastName(this.textInputLastName.getText().toString());
+        this.user.setBirthday(this.textInputBirthday.getText().toString());
+        this.user.setBirthCity(this.textInputBirthCity.getText().toString());
+        this.user.setDepartment(this.spinnerDepartment.getSelectedItem().toString());
         List<String> phones = getPhones();
-        this.user = new User(firstName, lastName, birthday, birthCity, department, phones);
+        this.user.setPhones(phones);
+    }
+
+    public void resetAction(MenuItem item) {
+        List<String> phones = new ArrayList<>();
+        this.user = new User("", "", "", "", "", "", phones);
+        update();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        updateUser();
+        outState.putParcelable("USER", this.user);
+    }
+
+    //méthode de gestion téléphone
+    public View addNewTelephone(View v) {
+        View addPhone = getLayoutInflater().inflate(R.layout.input_phone, null);
+        layoutPhones.addView(addPhone);
+        return addPhone;
     }
 
     private List<String> getPhones() {
         List<String> phones = new ArrayList<>();
-        Log.i("debug", String.valueOf(layoutPhones.getChildCount()));
         for(int index = 0; index < layoutPhones.getChildCount(); index++) {
             View child = layoutPhones.getChildAt(index);
             EditText textInputPhoneNum = child.findViewById(R.id.ti_phone_num);
             phones.add(textInputPhoneNum.getText().toString());
         }
         return phones;
-    }
-
-    private void update() {
-        textInputLastName.setText(this.user.getLastName());
-        textInputFirstName.setText(this.user.getFirstName());
-        textInputBirthday.setText(this.user.getBirthday());
-        textInputBirthCity.setText(this.user.getBirthCity());
-        setSpinnerDepartment();
-        updateLayoutPhone();
     }
 
     private void setSpinnerDepartment() {
@@ -260,11 +286,36 @@ public class EditFragment extends Fragment {
         this.textInputBirthday.setText(date);
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        updateUser();
-        outState.putParcelable("USER", this.user);
+    public void findCityInfo(MenuItem item) {
+        String url = "http://fr.wikipedia.org/?search=" + this.user.getBirthCity();
+
+        Uri uri = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
+    }
+
+    public void shareCityInfo(MenuItem item) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, this.user.getBirthCity());
+        intent.setType("text/plain");
+
+        String title = getResources().getString(R.string.chooser_title_share_photo);;
+        Intent chooser = Intent.createChooser(intent, title);
+
+        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+            startActivity(chooser);
+        }
+    }
+
+    private void showMessage(View v) {
+        Snackbar snackbar = Snackbar.make(v, this.user.getLastName() + " " + this.user.getFirstName() + " " + this.user.getBirthday() + " " + this.user.getBirthCity(), Snackbar.LENGTH_LONG);
+        snackbar.setAction("Dismiss", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                snackbar.dismiss();
+            }
+        });
+        snackbar.show();
     }
 
     public EditFragment() {

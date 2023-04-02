@@ -14,14 +14,16 @@ public class User implements Parcelable {
     private String birthday;
     private String birthCity;
     private String department;
+    private String photoPath;
     private List<String> phones;
 
-    public User(String firstName, String lastName, String birthday, String birthCity, String department, List<String> phones) {
+    public User(String firstName, String lastName, String birthday, String birthCity, String department, String photoPath, List<String> phones) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
         this.birthCity = birthCity;
         this.department = department;
+        this.photoPath = photoPath;
         this.phones = phones;
     }
 
@@ -31,6 +33,7 @@ public class User implements Parcelable {
         this.birthday = in.readString();
         this.birthCity = in.readString();
         this.department = in.readString();
+        this.photoPath = in.readString();
         this.phones = new ArrayList<>();
         in.readStringList(this.phones);
     }
@@ -59,6 +62,7 @@ public class User implements Parcelable {
         dest.writeString(this.birthday);
         dest.writeString(this.birthCity);
         dest.writeString(this.department);
+        dest.writeString(this.photoPath);
         dest.writeStringList(this.phones);
     }
 
@@ -86,6 +90,10 @@ public class User implements Parcelable {
         this.phones = phones;
     }
 
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
+    }
+
     public String getLastName() {
         return lastName;
     }
@@ -104,6 +112,10 @@ public class User implements Parcelable {
 
     public String getDepartment() {
         return department;
+    }
+
+    public String getPhotoPath() {
+        return photoPath;
     }
 
     public List<String> getPhones() {
